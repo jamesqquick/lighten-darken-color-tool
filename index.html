@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Quick Colors</title>
+	<link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+
+	<div class="container">
+
+
+		<h1 class="title">Lighten/Darken Color</h1>
+
+		<div id="mainContent">
+			<div id="input">
+				<label for="hex">Color (Hex)</label>
+				<input type="text" name="hex" id="hexInput" placeholder="#000000">
+
+			</div>
+
+			<div id="output">
+				<label for="lightenSlider" id="lightenText">Lighten 0%</label>
+				<input type="range" min="1" max="100" value="50" class="slider" id="lightenSlider">
+				<label for="darkenSlider" id="darkenText">Darken 0%</label>
+				<input type="range" min="1" max="100" value="50" class="slider" id="darkenSlider">
+
+			</div>
+
+		</div>
+		<p>Input Color</p>
+		<div id="inputColor" class="box">
+
+		</div>
+		<p>Altered Color</p>
+		<div id="alteredColor" class="box">
+
+		</div>
+	</div>
+
+
+
+	<script src="app.js"></script>
+</body>
+
+</html>

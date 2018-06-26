@@ -1,0 +1,36 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.box {
+	height: 100px;
+	width: 100%;
+	background-color: black;
+}
+
+h1.title {
+	text-align: center;
+	margin: 50px 0;
+}
+
+#mainContent {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.container {
+	padding: 0 50px;
+}
+
+label {
+	display: block;
+}
+
+#input {
+	flex-grow: 1;
+}
+
+#output {
+	flex-grow: 1;
+}
