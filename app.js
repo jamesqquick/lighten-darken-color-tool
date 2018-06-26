@@ -2,11 +2,11 @@ const inputColor = document.getElementById('inputColor');
 const alteredColor = document.getElementById('alteredColor');
 
 const hexInput = document.getElementById('hexInput');
-hexInput.value = '#000';
+hexInput.value = '#c6d5ac';
 const darkenSlider = document.getElementById('darkenSlider');
-darkenSlider.value = 1;
+darkenSlider.value = 0;
 const lightenSlider = document.getElementById('lightenSlider');
-lightenSlider.value = 1;
+lightenSlider.value = 0;
 const lightenText = document.getElementById('lightenText');
 const darkenText = document.getElementById('darkenText');
 
@@ -110,7 +110,7 @@ lightenSlider.addEventListener('input', function(e) {
 	if (!isValidHex(hexInput.value)) return;
 
 	lightenText.textContent = `Lighten ${lightenSlider.value}%`;
-	darkenSlider.value = 1;
+	darkenSlider.value = 0;
 	const { r, g, b } = convertHexToRGB(hexInput.value);
 	const alteredColorRGB = alterColor(r, g, b, this.value);
 	alteredColor.style.backgroundColor = convertRGBToHex(
@@ -124,7 +124,7 @@ darkenSlider.addEventListener('input', function(e) {
 	if (!isValidHex(hexInput.value)) return;
 
 	darkenText.textContent = `Darken ${darkenSlider.value}%`;
-	lightenSlider.value = 1;
+	lightenSlider.value = 0;
 	const { r, g, b } = convertHexToRGB(hexInput.value);
 	const alteredColorRGB = alterColor(r, g, b, 0 - this.value);
 	alteredColor.style.backgroundColor = convertRGBToHex(
