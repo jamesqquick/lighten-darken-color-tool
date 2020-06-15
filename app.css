@@ -1,59 +1,90 @@
 * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-	font-family: 'Montserrat', sans-serif;
-	background-color: #3e4560;
-	color: white;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #3e4560;
+    color: white;
 }
 
 label {
-	display: block;
-	font-size: 20px;
-	margin-bottom: 10px;
+    display: block;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 input {
-	margin-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 input[type='text'] {
-	font-size: 16px;
-	padding: 7px 10px;
-	border-radius: 3px;
-	box-shadow: 0 1px 2px black;
-	border: none;
+    font-size: 16px;
+    padding: 7px 10px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px black;
+    border: none;
 }
 
 .box {
-	height: 100px;
-	width: 100%;
-	background-color: #c6d5ac;
-	margin-bottom: 25px;
+    height: 100px;
+    width: 100%;
+    background-color: #c6d5ac;
+    margin-bottom: 25px;
 }
 
 .title {
-	text-align: center;
-	margin: 50px 0;
-	color: #c6d5ac;
-	font-size: 54px;
+    text-align: center;
+    margin: 50px 0;
+    color: #c6d5ac;
+    font-size: 54px;
 }
 
 .container {
-	padding: 0 50px;
-}
-
-#mainContent {
-	display: flex;
-	justify-content: space-evenly;
+    padding: 0 50px;
 }
 
 #input {
-	flex-grow: 1;
+    flex-grow: 1;
 }
 
 #output {
-	flex-grow: 1;
+    flex-grow: 1;
+}
+
+.unselected {
+    opacity: 0.25;
+}
+
+.toggle-text {
+    font-size: 24px;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.toggle-btn {
+    height: 30px;
+    width: 60px;
+    background: gray;
+    border-radius: 30px;
+    padding: 5px;
+    margin: 0 10px;
+}
+
+.toggle-btn > .inner-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    transition: all 250ms;
+}
+
+.toggle-btn.toggled > .inner-circle {
+    transform: translateX(30px);
+    background-color: #333;
 }

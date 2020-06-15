@@ -1,140 +1,84 @@
 const inputColor = document.getElementById('inputColor');
 const alteredColor = document.getElementById('alteredColor');
-
+const toggleBtn = document.getElementById('toggleBtn');
 const hexInput = document.getElementById('hexInput');
 hexInput.value = '#c6d5ac';
-const darkenSlider = document.getElementById('darkenSlider');
-darkenSlider.value = 0;
-const lightenSlider = document.getElementById('lightenSlider');
-lightenSlider.value = 0;
+const slider = document.getElementById('slider');
+const sliderText = document.getElementById('sliderText');
 const lightenText = document.getElementById('lightenText');
 const darkenText = document.getElementById('darkenText');
-
-hexInput.addEventListener('keyup', e => {
-	//console.log(hexInput.value);
-	if (hexInput.value.substring(0, 1) !== '#') {
-		hexInput.value = '#' + hexInput.value;
-	}
-	inputColor.style.backgroundColor = hexInput.value;
-	alteredColor.style.backgroundColor = hexInput.value;
-	resetSliders();
+const alteredColorText = document.getElementById('alteredColorText');
+toggleBtn.addEventListener('click', () => {
+    if (toggleBtn.classList.contains('toggled')) {
+        toggleBtn.classList.remove('toggled');
+        lightenText.classList.remove('unselected');
+        darkenText.classList.add('unselected');
+    } else {
+        toggleBtn.classList.add('toggled');
+        darkenText.classList.remove('unselected');
+        lightenText.classList.add('unselected');
+    }
+    reset();
 });
 
-const isValidHex = hex => {
-	//if (!hex) return false;
-	const strippedHex = hex.substring(0, 1) === '#' ? hex.substring(1) : hex;
-	const validSizes = [3, 6];
-	return validSizes.includes(strippedHex.length);
+const reset = () => {
+    slider.value = 0;
+    sliderText.innerText = `0%`;
+    alteredColor.style.backgroundColor = hexInput.value;
+    inputColor.style.backgroundColor = hexInput.value;
 };
 
-const convertHexToRGB = hex => {
-	if (!isValidHex(hex)) return null;
+hexInput.addEventListener('keyup', (e) => {
+    inputColor.style.backgroundColor = hexInput.value;
+    reset();
+});
 
-	//Check for #, if there then remove it
-	if (hex.substring(0, 1) === '#') {
-		hex = hex.substring(1);
-	}
-	let hexArray = hex.split('');
-	if (hexArray.length === 3) {
-		hexArray = [
-			hexArray[0],
-			hexArray[0],
-			hexArray[1],
-			hexArray[1],
-			hexArray[2],
-			hexArray[2]
-		];
-	}
-	//Should have an array of length 6 (first two red, second two green, third two blue in hex)
-	//convert r,g, and b from hex to base 10
-	const fixedHexString = hexArray.join('');
-	const r = parseInt(fixedHexString.substring(0, 2), 16);
-	const g = parseInt(fixedHexString.substring(2, 4), 16);
-	const b = parseInt(fixedHexString.substring(4, 6), 16);
-
-	return { r, g, b };
+const isValidHex = (hex) => {
+    if (!hex) return false;
+    const strippedHex = hex.replace('#', '');
+    return strippedHex.length === 6;
 };
 
-const alterColor = (r, g, b, percentage) => {
-	if (r < 0 || g < 0 || b < 0) {
-		return null;
-	}
-	const amount = Math.floor((percentage / 100) * 255);
-	const newR = Math.min(255, Math.max(0, r + amount));
-	const newG = Math.min(255, Math.max(0, g + amount));
-	const newB = Math.min(255, Math.max(0, b + amount));
+const convertHexToRGB = (hex) => {
+    if (!isValidHex(hex)) return null;
 
-	return {
-		r: newR,
-		g: newG,
-		b: newB
-	};
+    hex = hex.replace('#', ''); //remove hashtag
+
+    //convert r,g, and b from hex to base 10
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    return { r, g, b };
+};
+
+const alterColor = (hex, percentage) => {
+    const { r, g, b } = convertHexToRGB(hex);
+    const amount = Math.floor((percentage / 100) * 255);
+
+    return convertRGBToHex(
+        increaseHex(r, amount),
+        increaseHex(g, amount),
+        increaseHex(b, amount)
+    );
+};
+
+const increaseHex = (hex, amount) => {
+    return Math.min(255, Math.max(0, hex + amount));
 };
 
 const convertRGBToHex = (r, g, b) => {
-	return (
-		'#' +
-		convertBase10ToHex(r) +
-		convertBase10ToHex(g) +
-		convertBase10ToHex(b)
-	);
+    return '#' + r.toString(16) + g.toString(16) + b.toString(16);
 };
 
-convertBase10ToHex = digit => {
-	const decimalDigitToHexDigitMap = {
-		0: 0,
-		1: 1,
-		2: 2,
-		3: 3,
-		4: 4,
-		5: 5,
-		6: 6,
-		7: 7,
-		8: 8,
-		9: 9,
-		10: 'a',
-		11: 'b',
-		12: 'c',
-		13: 'd',
-		14: 'e',
-		15: 'f'
-	};
+slider.addEventListener('input', function (e) {
+    if (!isValidHex(hexInput.value)) return;
+    sliderText.textContent = `${slider.value}%`;
+    const valueAddition = toggleBtn.classList.contains('toggled')
+        ? -slider.value
+        : slider.value;
+    const hexColor = alterColor(hexInput.value, valueAddition);
 
-	const firstDigit = decimalDigitToHexDigitMap[Math.floor(digit / 16)];
-	const secondDigit = decimalDigitToHexDigitMap[digit % 16];
-
-	return firstDigit + '' + secondDigit;
-};
-
-lightenSlider.addEventListener('input', function(e) {
-	if (!isValidHex(hexInput.value)) return;
-
-	lightenText.textContent = `Lighten ${lightenSlider.value}%`;
-	darkenSlider.value = 0;
-	const { r, g, b } = convertHexToRGB(hexInput.value);
-	const alteredColorRGB = alterColor(r, g, b, this.value);
-	alteredColor.style.backgroundColor = convertRGBToHex(
-		alteredColorRGB.r,
-		alteredColorRGB.g,
-		alteredColorRGB.b
-	);
+    alteredColor.style.backgroundColor = hexColor;
+    alteredColorText.innerText = hexColor;
 });
-
-darkenSlider.addEventListener('input', function(e) {
-	if (!isValidHex(hexInput.value)) return;
-
-	darkenText.textContent = `Darken ${darkenSlider.value}%`;
-	lightenSlider.value = 0;
-	const { r, g, b } = convertHexToRGB(hexInput.value);
-	const alteredColorRGB = alterColor(r, g, b, 0 - this.value);
-	alteredColor.style.backgroundColor = convertRGBToHex(
-		alteredColorRGB.r,
-		alteredColorRGB.g,
-		alteredColorRGB.b
-	);
-});
-
-resetSliders = () => {
-	darkenSlider.value = 1;
-	lightenSlider.value = 1;
-};
