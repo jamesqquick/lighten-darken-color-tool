@@ -39,19 +39,6 @@ const isValidHex = (hex) => {
     return strippedHex.length === 6;
 };
 
-const convertHexToRGB = (hex) => {
-    if (!isValidHex(hex)) return null;
-
-    hex = hex.replace('#', ''); //remove hashtag
-
-    //convert r,g, and b from hex to base 10
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    return { r, g, b };
-};
-
 const alterColor = (hex, percentage) => {
     const { r, g, b } = convertHexToRGB(hex);
     const amount = Math.floor((percentage / 100) * 255);
@@ -65,6 +52,19 @@ const alterColor = (hex, percentage) => {
 
 const increaseHex = (hex, amount) => {
     return Math.min(255, Math.max(0, hex + amount));
+};
+
+const convertHexToRGB = (hex) => {
+    if (!isValidHex(hex)) return null;
+
+    hex = hex.replace('#', ''); //remove hashtag
+
+    //convert r,g, and b from hex to base 10
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    return { r, g, b };
 };
 
 const convertRGBToHex = (r, g, b) => {
