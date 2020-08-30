@@ -68,7 +68,12 @@ const increaseHex = (hex, amount) => {
 };
 
 const convertRGBToHex = (r, g, b) => {
-    return '#' + r.toString(16) + g.toString(16) + b.toString(16);
+    const firstPair = ('0' + r.toString(16)).slice(-2);
+    const secondPair = ('0' + g.toString(16)).slice(-2);
+    const thirdPair = ('0' + b.toString(16)).slice(-2);
+
+    const hex = '#' + firstPair + secondPair + thirdPair;
+    return hex;
 };
 
 slider.addEventListener('input', function (e) {
@@ -78,7 +83,6 @@ slider.addEventListener('input', function (e) {
         ? -slider.value
         : slider.value;
     const hexColor = alterColor(hexInput.value, valueAddition);
-
     alteredColor.style.backgroundColor = hexColor;
     alteredColorText.innerText = hexColor;
 });
